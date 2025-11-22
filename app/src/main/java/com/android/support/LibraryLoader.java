@@ -48,14 +48,14 @@ public class LibraryLoader {
         boolean loaded = false;
 
         if (abi.contains("arm64")) {
-            loaded = CopyLoad(context, "BGFXArm64/" + libName, libName);
+            loaded = CopyLoad(context, "YannaArm64/" + libName, libName);
             if (!loaded) {
-                loaded = CopyLoad(context, "BGFXArm/" + libName, libName);
+                loaded = CopyLoad(context, "YannaArm/" + libName, libName);
             }
         } else {
-            loaded = CopyLoad(context, "BGFXArm/" + libName, libName);
+            loaded = CopyLoad(context, "YannaArm/" + libName, libName);
             if (!loaded) {
-                loaded = CopyLoad(context, "BGFXArm64/" + libName, libName);
+                loaded = CopyLoad(context, "YannaArm64/" + libName, libName);
             }
         }
 
