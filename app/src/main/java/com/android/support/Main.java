@@ -11,7 +11,7 @@ import com.android.support.Info;
 public class Main {
 
     public static void loadLibrary(Context context) {
-    LibraryLoader.LoadLib(context, "libBGFX.so");
+    LibraryLoader.LoadLib(context, "libYanna.so");
 }
 
     private static native void CheckOverlayPermission(Context context);
