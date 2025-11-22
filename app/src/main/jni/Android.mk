@@ -7,7 +7,7 @@ LOCAL_SRC_FILES := Main.cpp \
  Menu/Jni.cpp \
  Menu/Setup.cpp \
  Feat.cpp \
- BGFX/Logger.cpp \
+ Yanna/Logger.cpp \
  Heplers/JniHelper.cpp \
  Includes/Utils.cpp \
  Network/ClientNetwork.cpp \
