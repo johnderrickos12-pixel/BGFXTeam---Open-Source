@@ -1,7 +1,7 @@
-# BGFXTeam  
-BGFX - The #1 Blockman Go Executor  
+# Yanna
+Yanna - The #1 Yanna Executor  
 
-BGFX is a Blockman Go Executor and it's the first executor ever to be made for Blockman Go. It's fully open source, supports 64bit and 32bit, and works for version 2.117.1 (com.sandboxol.blockymods.official).  
+Yanna is a Yanna Executor and it's the first executor ever to be made for Yanna. It's fully open source, supports 64bit and 32bit, and works for version 2.117.1 (com.sandboxol.blockymods.official).  
 
 The source won't be getting **any updates.**
 
@@ -9,32 +9,31 @@ The source won't be getting **any updates.**
 
 ## # Inject
 
-Clone or download BGFX source, compile it with **Visual Studio**, **Android Studio**, or **AIDE (Android)**.  
+Clone or download Yanna source, compile it with **Visual Studio**, **Android Studio**, or **AIDE (Android)**.  
 
 Take the compiled APK and open it, then go to `lib/` and **extract both arm64 and arm32 libs**.  
 
-Go to the Blockman Go APK, open `assets/` and **create two folders**:  
+Go to the Yanna APK, open `assets/` and **create two folders**:  
 
 ```text
-BGFXArm       (for 32bit)
-BGFXArm64     (for 64bit)
+YannaArm       (for 32bit)
+YannaArm64     (for 64bit)
 ```
 
-Paste `libBGFX.so` of the respective ABI into these folders.  
+Paste `libYanna.so` of the respective ABI into these folders.  
 
-Next, extract `classes.dex` from the BGFX Menu APK, rename it as the **next dex** in Blockman Go APK.  
-For example, if the last dex in BG APK is `classes20.dex`, rename BGFX Menu dex to:  
+Next, extract `classes.dex` from the Yanna Menu APK, rename it as the **next dex** in the Yanna APK.  
+For example, if the last dex in Yanna APK is `classes20.dex`, rename Yanna Menu dex to:  
 
 ```text
 classes21.dex
 ```
 
-Open all BG's dex files and navigate to:  
+Open all of Yanna's dex files and navigate to:  
 
 ```text
-com/sandboxol/blockmango/BlockManEchoesActivity
+com/yanna/executor/MainActivity
 ```
-(or equivalently `com.sandboxol.blockmango.BlockManEchoesActivity`)  
 
 Go inside `onCreate()` and **add the following**:
 
@@ -65,19 +64,19 @@ You are now done with the injection! Simply install the modded APK and enjoy.
 
 ## # Update
 
-Blockman Go updated and you need to update your executor/injector?  
+Yanna updated and you need to update your executor/injector?  
 
 1. Open the project source code.  
 2. Go to `Main.cpp`.  
 3. Search for all the offset strings.  
-4. Open the Blockman Go APK in **IDA Pro** or **Ghidra** to find the new addresses/offsets.  
+4. Open the Yanna APK in **IDA Pro** or **Ghidra** to find the new addresses/offsets.  
 5. Update the offsets in your source code accordingly.  
 
 ---
 
 ## # Bypass
 
-For Blockman Go bypass, we **won’t leak any of our methods**.  
+For Yanna bypass, we **won’t leak any of our methods**.  
 You will need to handle the bypass yourself.
 
 
